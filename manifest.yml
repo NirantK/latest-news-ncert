@@ -1,0 +1,15 @@
+applications:
+- path: .
+  memory: 128M
+  instances: 1
+  domain: mybluemix.net
+  name: ncert-hackone
+  host: ncert-hackone
+  disk_quota: 1024M
+  buildpack: python_buildpack
+# - services:
+#   - natural-language-understanding-ii
+#   name: ncert-hackone
+#   # command: 
+#   path: .
+#   memory: 512M

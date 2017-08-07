@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import os, json, urllib
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 
 from watson_developer_cloud import NaturalLanguageUnderstandingV1
 import watson_developer_cloud.natural_language_understanding.features.v1 \
@@ -46,25 +46,33 @@ def SayHello(name):
     }
     return jsonify(results=message)
 
-# @app.route('/api/text/')
-def readfile():
+
+@app.route('/api/text/<fname>')
+def readfile(fname):
+    # return send_from_directory('static\\books', fname)    
+
     # hard_override_filename = "static\\books\\class6-sci\\fesc102.txt"
     # root_dir = "https://raw.githubusercontent.com/NirantK/ncert/master/"
     # filename = root_dir + content + "/" + "fesc" + chapter + ".txt"
-    filename = "https://raw.githubusercontent.com/NirantK/ncert/master/class6-sci/fesc101.txt"
-    text = urllib.request.urlopen(filename).read()
-    # fp = open(filename, 'rb')
-    # text = fp.read()
+    
+    # filename = "https://raw.githubusercontent.com/NirantK/ncert/master/class6-sci/fesc101.txt"
+    # text = urllib.request.urlopen(filename).read()
+    try:
+        fp = open(fname, 'rb')
+        text = fp.read()
+    except Exception as e:
+        print(e)
+        print('File not found')
+        return('File not found')
+    # text = app.send_static_file('fesc101.txt')
+    # print(text)
     return(text)
-
-
 
 # @app.route('/api/news/')
 def get_news(query):
     discovery = DiscoveryV1(
         username = 'username',
-        password ='password',
-        
+        password = 'password',
         version='2017-08-01'
     )
     environments = discovery.get_environments()
@@ -84,16 +92,15 @@ def get_news(query):
     print(json.dumps(my_query, indent=2))
     return(jsonify(my_query))
 
-@app.route('/api/nlp/')
-def processText():
-    in_text = readfile()
+@app.route('/api/nlp/<fname>')
+def processText(fname):
+    print('fname', fname)
+    in_text = readfile(fname)
     in_text = str(in_text)
-    # print(in_text)
-
+    
     natural_language_understanding = NaturalLanguageUnderstandingV1(
         username = 'username',
-        password ='password',
-        
+        password = 'password',
         version="2017-02-27")
 
     response = natural_language_understanding.analyze(text=in_text,
@@ -113,18 +120,15 @@ def processText():
         ]
     )
 
-    # print(json.dumps(response, indent=2))
-    # response = str(response)
-    # print(response)
     # return jsonify(response)
     return json.dumps(response, indent=2)
 
-@app.route('/api/transform/<concepts>/')
-def construct_query(concepts):
-    response = json.loads(processText())
+@app.route('/api/news/<fname>/')
+def construct_query(fname):
+    response = json.loads(processText(fname))
     concepts = response['concepts']
     texts = [concept['text'] for concept in concepts]
-    print(texts)
+    # print(texts)
     query = " ".join(texts)
     news = get_news(query)
     # return jsonify(response)

@@ -19,6 +19,8 @@ from watson_developer_cloud import NaturalLanguageUnderstandingV1
 import watson_developer_cloud.natural_language_understanding.features.v1 \
   as Features
 
+from watson_developer_cloud import DiscoveryV1
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -55,15 +57,43 @@ def readfile():
     # text = fp.read()
     return(text)
 
+
+
+# @app.route('/api/news/')
+def get_news(query):
+    discovery = DiscoveryV1(
+        username = 'username',
+        password ='password',
+        
+        version='2017-08-01'
+    )
+    environments = discovery.get_environments()
+    print(json.dumps(environments, indent=2))
+
+    #  if x['name'] == 'Watson Discovery News Environment'
+    news_environments = [x for x in environments['environments']]
+    news_environment_id = news_environments[0]['environment_id']
+    print(json.dumps(news_environment_id, indent=2))
+
+    collections = discovery.list_collections(news_environment_id)
+    news_collections = [x for x in collections['collections']]
+    print(json.dumps(collections, indent=2))
+
+    qopts = {'query': 'Fruit Seed Plant Omnivore'}
+    my_query = discovery.query(news_environment_id, 'news', qopts)
+    print(json.dumps(my_query, indent=2))
+    return(jsonify(my_query))
+
 @app.route('/api/nlp/')
 def processText():
     in_text = readfile()
     in_text = str(in_text)
-    print(in_text)
+    # print(in_text)
 
     natural_language_understanding = NaturalLanguageUnderstandingV1(
         username = 'username',
         password ='password',
+        
         version="2017-02-27")
 
     response = natural_language_understanding.analyze(text=in_text,
@@ -72,17 +102,33 @@ def processText():
             # Concepts options
             limit=50
         ),
-        Features.Keywords(
-          # Keywords options
-          # sentiment=True,
-          # emotion=True,
-          limit=10
-        )
+        # Features.Keywords(
+        #   # Keywords options
+        #   # sentiment=True,
+        #   # emotion=True,
+        #   limit=10
+        # ),
+        # Features.Entities(
+        # )
         ]
     )
 
-    print(json.dumps(response, indent=2))
-    return jsonify(response)
+    # print(json.dumps(response, indent=2))
+    # response = str(response)
+    # print(response)
+    # return jsonify(response)
+    return json.dumps(response, indent=2)
+
+@app.route('/api/transform/<concepts>/')
+def construct_query(concepts):
+    response = json.loads(processText())
+    concepts = response['concepts']
+    texts = [concept['text'] for concept in concepts]
+    print(texts)
+    query = " ".join(texts)
+    news = get_news(query)
+    # return jsonify(response)
+    return news
 
 port = os.getenv('PORT', '5000')
 if __name__ == "__main__":

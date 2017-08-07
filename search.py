@@ -1,12 +1,11 @@
 import sys
 import os
 import json
-from watson_developer_cloud import DiscoveryV1
 
 discovery = DiscoveryV1(
-	username = 'username',
-	password ='password',
-	version='2017-08-01'
+    username = 'username',
+    password ='password',
+    version='2017-08-01'
 )
 
 environments = discovery.get_environments()

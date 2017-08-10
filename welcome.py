@@ -49,14 +49,7 @@ def SayHello(name):
 
 @app.route('/api/text/<fname>')
 def readfile(fname):
-    # return send_from_directory('static\\books', fname)    
-
-    # hard_override_filename = "static\\books\\class6-sci\\fesc102.txt"
-    # root_dir = "https://raw.githubusercontent.com/NirantK/ncert/master/"
-    # filename = root_dir + content + "/" + "fesc" + chapter + ".txt"
-    
-    # filename = "https://raw.githubusercontent.com/NirantK/ncert/master/class6-sci/fesc101.txt"
-    # text = urllib.request.urlopen(filename).read()
+    fname = fname + ".txt"
     try:
         fp = open(fname, 'rb')
         text = fp.read()
@@ -71,8 +64,8 @@ def readfile(fname):
 # @app.route('/api/news/')
 def get_news(query):
     discovery = DiscoveryV1(
-        username='baba5abd-0342-4418-a917-d9b120b23c31',
-        password='RIUok8yT0g2n',
+        username='username',
+        password='password',
         version='2017-08-01'
     )
     environments = discovery.get_environments()
@@ -87,7 +80,7 @@ def get_news(query):
     news_collections = [x for x in collections['collections']]
     print(json.dumps(collections, indent=2))
 
-    qopts = {'query': 'Fruit Seed Plant Omnivore'}
+    qopts = {'query': query, 'count': 5, 'return': 'title, text, url, sentiments'}
     my_query = discovery.query(news_environment_id, 'news', qopts)
     print(json.dumps(my_query, indent=2))
     return(jsonify(my_query))
@@ -99,8 +92,8 @@ def processText(fname):
     in_text = str(in_text)
     
     natural_language_understanding = NaturalLanguageUnderstandingV1(
-        username="f574cea4-378e-4808-adc5-be02d2a1a976",
-        password="p2aIUnoBazzl",
+        username="username",
+        password="password",
         version="2017-02-27")
 
     response = natural_language_understanding.analyze(text=in_text,
@@ -123,7 +116,7 @@ def processText(fname):
     # return jsonify(response)
     return json.dumps(response, indent=2)
 
-@app.route('/api/news/<fname>/')
+@app.route('/api/news/<fname>.json')
 def construct_query(fname):
     response = json.loads(processText(fname))
     concepts = response['concepts']

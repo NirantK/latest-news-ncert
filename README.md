@@ -7,9 +7,9 @@ NCERT Syllabus while age appropriate and relevant, handicaps the student to conn
 Please find the interactive demo at [Awesome NCERT](http://www.nirantk.in/awesome-ncert/)
 
 ## Dataset
-Dataset is available at [NirantK/ncert](https://github.com/NirantK/ncert/)
-Scrapped the Official NCERT textbooks for Class 6 Science (available as pdfs) 
-Then converted them to text for easier data manipulation
+- Dataset is available at [NirantK/ncert](https://github.com/NirantK/ncert/)
+- Scrapped the Official NCERT textbooks for Class 6 Science (available as pdfs) 
+- Converted them to text for easier data manipulation and Natural Language Processing
 
 ### Process flow:
 Read a NCERT Chapter (Natural Language Understanding) -> Find key concepts -> Find relevant news stories (using the Watson News API)

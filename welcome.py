@@ -57,15 +57,12 @@ def readfile(fname):
         print(e)
         print('File not found')
         return('File not found')
-    # text = app.send_static_file('fesc101.txt')
-    # print(text)
     return(text)
 
-# @app.route('/api/news/')
 def get_news(query):
     discovery = DiscoveryV1(
-        username='username',
-        password='password',
+        username='baba5abd-0342-4418-a917-d9b120b23c31',
+        password='RIUok8yT0g2n',
         version='2017-08-01'
     )
     environments = discovery.get_environments()
@@ -92,8 +89,8 @@ def processText(fname):
     in_text = str(in_text)
     
     natural_language_understanding = NaturalLanguageUnderstandingV1(
-        username="username",
-        password="password",
+        username="f574cea4-378e-4808-adc5-be02d2a1a976",
+        password="p2aIUnoBazzl",
         version="2017-02-27")
 
     response = natural_language_understanding.analyze(text=in_text,
@@ -116,7 +113,7 @@ def processText(fname):
     # return jsonify(response)
     return json.dumps(response, indent=2)
 
-@app.route('/api/news/<fname>.json')
+@app.route('/api/news/<fname>')
 def construct_query(fname):
     response = json.loads(processText(fname))
     concepts = response['concepts']

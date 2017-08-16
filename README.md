@@ -1,7 +1,10 @@
 # Topics to Relevant News Stories
 
+## Recognition
+The project was inteneded as an entry to the [Opened.ai AI for Education Hackathon 2017](www.opened.ai/index.html). We received a **Honorable Mention** for *Best use of IBM Watson API* alongside teams from 3 continents and universities like Oxford, CMU and Purdue. 
+
 ## What we do?
-NCERT Syllabus while age appropriate and relevant, handicaps the student to connect to what they see around them. We suggest them relevant news pieces to the chapter they are studying. This helps them not only be updated, but also relate to the material better.
+Generate relevant news articles for content the student is currently viewing using IBM Watson NLU API to extract key concepts from text and using IBM News API for retrieving related news clips.
 
 ## Demo
 Please find the interactive demo at [Awesome NCERT](http://www.nirantk.in/awesome-ncert/)
@@ -11,8 +14,11 @@ Please find the interactive demo at [Awesome NCERT](http://www.nirantk.in/awesom
 - Scrapped the Official NCERT textbooks for Class 6 Science (available as pdfs) 
 - Converted them to text for easier data manipulation and Natural Language Processing
 
+## Video
+[Demo Video made for Opened.ai Hackathon](https://youtu.be/DVV10VSIevc)
+
 ### Process flow:
-Read a NCERT Chapter (Natural Language Understanding) -> Find key concepts -> Find relevant news stories (using the Watson News API)
+Read a NCERT Chapter (Natural Language Understanding) -> Find key concepts -> Find relevant news stories
 
 ### Intentions
 By understanding the text book topics with their related new stories helps in enriching the user learning experience.
@@ -23,7 +29,7 @@ For example, while learning the text book topic such as “Where does food come 
 1. Thanks for Anshul Baghi and Opened.ai team for organizing the *AI for Education* hackathon 2017
 2. Thanks to IBM for the Watson NLU and News API which saved us a lot of time
 
-## Run the app locally
+### Run the app locally
 
 1. [Install Python][]
 1. cd into this project's root directory
